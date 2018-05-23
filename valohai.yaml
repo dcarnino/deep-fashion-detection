@@ -8,7 +8,7 @@
       - export PYTHONPATH=$PYTHONPATH:`pwd`:`pwd`/slim
       - cd object_detection/
       - mkdir -p training
-      - cp /valohai/repository/faster_rcnn_inception_resnet_v2_atrous_coco.config training/
+      - cp /valohai/repository/ssd_inception_v2_coco.config training/
       - cp /valohai/repository/eval.py training/
       - mkdir training/data
       - cp /valohai/repository/deepfashion_label_map.pbtxt training/data/
@@ -18,7 +18,7 @@
       - cp /valohai/repository/checkpoint training/models/
       - cd training/
       - mkdir models/eval
-      - python3 eval.py --logtostderr --eval_dir=./models/eval --pipeline_config_path=faster_rcnn_inception_resnet_v2_atrous_coco.config --checkpoint_dir=./models
+      - python3 eval.py --logtostderr --eval_dir=./models/eval --pipeline_config_path=ssd_inception_v2_coco.config --checkpoint_dir=./models
       - cd models
       - zip -r eval_val.zip eval
       - mv eval_val.zip /valohai/outputs/
@@ -30,28 +30,29 @@
     name: Resume training
     image: dcarnino/docker-tensorflow-object-detection
     command:
-      - nsteps=200
+      - nsteps=100
       - cd /tensorflow/models/research/
       - export PYTHONPATH=$PYTHONPATH:`pwd`:`pwd`/slim
       - cd object_detection/
       - mkdir -p training
-      - cp /valohai/repository/faster_rcnn_inception_resnet_v2_atrous_coco.config training/
+      - cp /valohai/repository/ssd_inception_v2_coco.config training/
       - cp /valohai/repository/train.py training/
-      - sed -i -e "114s/200000/$nsteps/" training/faster_rcnn_inception_resnet_v2_atrous_coco.config
+      - sed -i -e "157s/200000/$nsteps/" training/ssd_inception_v2_coco.config
       - mkdir training/data
       - cp /valohai/repository/deepfashion_label_map.pbtxt training/data/
       - cp /valohai/inputs/train_records/train.record training/data/
       - cp /valohai/inputs/val_records/val.record training/data/
-      - unzip /valohai/inputs/trained_net/models.zip -d training/
+      - unzip /valohai/inputs/trained_net/fine_tuned_model.zip -d training/
+      - mv training/fine_tuned_model training/models
+      - mkdir training/models/train
       - cp export_inference_graph.py training/
+      - cp /valohai/repository/checkpoint training/models/
       - cd training/
       - ls ./models/train/
-      - python3 train.py --logtostderr --train_dir=./models/train --pipeline_config_path=faster_rcnn_inception_resnet_v2_atrous_coco.config
-      - python3 export_inference_graph.py --input_type image_tensor --pipeline_config_path ./faster_rcnn_inception_resnet_v2_atrous_coco.config --trained_checkpoint_prefix ./models/train/model.ckpt-$nsteps --output_directory ./fine_tuned_model
+      - python3 train.py --logtostderr --train_dir=./models/train --pipeline_config_path=ssd_inception_v2_coco.config
+      - python3 export_inference_graph.py --input_type image_tensor --pipeline_config_path ./ssd_inception_v2_coco.config --trained_checkpoint_prefix ./models/train/model.ckpt-$nsteps --output_directory ./fine_tuned_model
       - zip -r fine_tuned_model.zip fine_tuned_model
-      - zip -r models.zip models
       - mv fine_tuned_model.zip /valohai/outputs/
-      - mv models.zip /valohai/outputs/
       - mv tensorflow.log /valohai/outputs/
     inputs:
       - name: train_records
@@ -67,30 +68,28 @@
       - export PYTHONPATH=$PYTHONPATH:`pwd`:`pwd`/slim
       - cd object_detection/
       - mkdir -p training
-      - cp /valohai/repository/faster_rcnn_inception_resnet_v2_atrous_coco.config training/
+      - cp /valohai/repository/ssd_inception_v2_coco.config training/
       - cp /valohai/repository/train.py training/
-      - sed -i -e "114s/200000/$nsteps/" training/faster_rcnn_inception_resnet_v2_atrous_coco.config
+      - sed -i -e "157s/200000/$nsteps/" training/ssd_inception_v2_coco.config
       - mkdir training/data
       - cp /valohai/repository/deepfashion_label_map.pbtxt training/data/
       - cp /valohai/inputs/train_records/train.record training/data/
       - cp /valohai/inputs/val_records/val.record training/data/
       - mkdir training/models
-      - tar -xzvf /valohai/inputs/pretrained_net/faster_rcnn_inception_resnet_v2_atrous_coco_2018_01_28.tar.gz -C training/models/ --strip-components=1
+      - tar -xzvf /valohai/inputs/pretrained_net/ssd_inception_v2_coco_2017_11_17.tar.gz -C training/models/ --strip-components=1
       - mkdir training/models/train
       - cp export_inference_graph.py training/
       - cd training/
-      - python3 train.py --logtostderr --train_dir=./models/train --pipeline_config_path=faster_rcnn_inception_resnet_v2_atrous_coco.config
-      - python3 export_inference_graph.py --input_type image_tensor --pipeline_config_path ./faster_rcnn_inception_resnet_v2_atrous_coco.config --trained_checkpoint_prefix ./models/train/model.ckpt-$nsteps --output_directory ./fine_tuned_model
+      - python3 train.py --logtostderr --train_dir=./models/train --pipeline_config_path=ssd_inception_v2_coco.config
+      - python3 export_inference_graph.py --input_type image_tensor --pipeline_config_path ./ssd_inception_v2_coco.config --trained_checkpoint_prefix ./models/train/model.ckpt-$nsteps --output_directory ./fine_tuned_model
       - zip -r fine_tuned_model.zip fine_tuned_model
-      - zip -r models.zip models
       - mv fine_tuned_model.zip /valohai/outputs/
-      - mv models.zip /valohai/outputs/
       - mv tensorflow.log /valohai/outputs/
     inputs:
       - name: train_records
       - name: val_records
       - name: pretrained_net
-        default: http://download.tensorflow.org/models/object_detection/faster_rcnn_inception_resnet_v2_atrous_coco_2018_01_28.tar.gz
+        default: http://download.tensorflow.org/models/object_detection/ssd_inception_v2_coco_2017_11_17.tar.gz
 
 - step:
     name: Dataset preparation
