@@ -108,7 +108,8 @@
       - echo "Unzipping deep fashion dataset..."
       - ls
       - pwd
-      - unzip -q /valohai/inputs/category_and_attribute_prediction_benchmark/AACt2dLasqSDsCf-kcQwoWyfa -d category_and_attribute_prediction_benchmark/ -x /
+      - unzip -q /valohai/inputs/category_and_attribute_prediction_benchmark/AACt2dLasqSDsCf-kcQwoWyfa -d category_and_attribute_prediction_benchmark/
+      - unzip -q category_and_attribute_prediction_benchmark/AACt2dLasqSDsCf-kcQwoWyfa -d category_and_attribute_prediction_benchmark/
       - ls
       - pwd
       - ls category_and_attribute_prediction_benchmark/
