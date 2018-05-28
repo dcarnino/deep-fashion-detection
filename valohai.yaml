@@ -109,8 +109,9 @@
       - ls
       - pwd
       - unzip -q /valohai/inputs/category_and_attribute_prediction_benchmark/AACt2dLasqSDsCf-kcQwoWyfa -d category_and_attribute_prediction_benchmark/
-      - mv category_and_attribute_prediction_benchmark/AACt2dLasqSDsCf-kcQwoWyfa AACt2dLasqSDsCf-kcQwoWyfa
+      - mv category_and_attribute_prediction_benchmark/AACt2dLasqSDsCf-kcQwoWyfa ./AACt2dLasqSDsCf-kcQwoWyfa
       - mv AACt2dLasqSDsCf-kcQwoWyfa/ category_and_attribute_prediction_benchmark/
+      - mv category_and_attribute_prediction_benchmark/AACt2dLasqSDsCf-kcQwoWyfa/ category_and_attribute_prediction_benchmark/
       - pwd
       - ls category_and_attribute_prediction_benchmark/
       - pwd
