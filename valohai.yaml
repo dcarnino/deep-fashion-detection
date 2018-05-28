@@ -113,6 +113,7 @@
       - ls
       - pwd
       - ls category_and_attribute_prediction_benchmark/
+      - ls category_and_attribute_prediction_benchmark/AACt2dLasqSDsCf-kcQwoWyfa/
       - ls category_and_attribute_prediction_benchmark/Img/
       - cd category_and_attribute_prediction_benchmark/Img/
       - unzip -q img.zip
