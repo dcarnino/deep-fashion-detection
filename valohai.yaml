@@ -106,7 +106,13 @@
       - wget --load-cookies /tmp/cookies.txt "https://docs.google.com/uc?export=download&confirm=$CONFIRM&id=1eFP3_HApf-AsYF--0OIlDNSdWevn0byq" -O /valohai/inputs/category_and_attribute_prediction_benchmark/AACt2dLasqSDsCf-kcQwoWyfa
       - rm -rf /tmp/cookies.txt
       - echo "Unzipping deep fashion dataset..."
+      - ls
+      - pwd
       - unzip -q /valohai/inputs/category_and_attribute_prediction_benchmark/AACt2dLasqSDsCf-kcQwoWyfa -d category_and_attribute_prediction_benchmark/ -x /
+      - ls
+      - pwd
+      - ls category_and_attribute_prediction_benchmark/
+      - ls category_and_attribute_prediction_benchmark/Img/
       - cd category_and_attribute_prediction_benchmark/Img/
       - unzip -q img.zip
       - cd ../../
